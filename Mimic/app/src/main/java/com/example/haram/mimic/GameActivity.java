@@ -72,6 +72,7 @@ public class GameActivity extends AppCompatActivity {
                     }
 
                     if(!npcMoving){
+
                         timerView.post(new Runnable() {
                             @Override
                             public void run() {
@@ -89,9 +90,18 @@ public class GameActivity extends AppCompatActivity {
             public void run() {
 
                 npcMoving = true;
+                moveList.clear();
 
-                for(int i = 0; i < moveCounter; i++){
-                    final int random = (int )(Math.random() * 4 + 1);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        buttonOff();
+                    }
+                });
+
+
+                for(int i = 0; i < moveCounter; i++) {
+                    final int random = (int) (Math.random() * 4 + 1);
 
                     try {
                         Thread.sleep(500);
@@ -104,10 +114,24 @@ public class GameActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             imgOne.setImageBitmap(npc[random]);
-                        }});
+                        }
+                    });
                     mp.start();
 
                 }
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        imgOne.setImageBitmap(npc[0]);
+                        buttonTurnOn();
+                    }
+                });
 
                 npcMoving = false;
             }
@@ -134,12 +158,22 @@ public class GameActivity extends AppCompatActivity {
                     imgTwo.setImageBitmap(player[2]);
                     moveChecker = checkMove(2,moveIndex);
 
+
+
+
+
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    left.setBackgroundResource(R.drawable.btn2);
+                    imgTwo.setImageBitmap(player[0]);
+
+
                     switch(moveChecker){
                         case 0:
                             moveIndex++;
                             break;
 
                         case 1:
+                            moveIndex = 0;
                             moveCounter--;
 
                             if(moveCounter < 4)
@@ -149,6 +183,7 @@ public class GameActivity extends AppCompatActivity {
                             break;
 
                         case 2:
+                            moveIndex = 0;
                             moveCounter++;
                             npcThread.start();
                             break;
@@ -156,12 +191,6 @@ public class GameActivity extends AppCompatActivity {
                         default:
                             break;
                     }
-
-
-
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    left.setBackgroundResource(R.drawable.btn2);
-                    imgTwo.setImageBitmap(player[0]);
                 }
                 return false;
             }
@@ -175,12 +204,21 @@ public class GameActivity extends AppCompatActivity {
                     imgTwo.setImageBitmap(player[1]);
                     moveChecker = checkMove(1,moveIndex);
 
+
+
+
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    right.setBackgroundResource(R.drawable.btn1);
+                    imgTwo.setImageBitmap(player[0]);
+
+
                     switch(moveChecker){
                         case 0:
                             moveIndex++;
                             break;
 
                         case 1:
+                            moveIndex = 0;
                             moveCounter--;
 
                             if(moveCounter < 4)
@@ -190,6 +228,7 @@ public class GameActivity extends AppCompatActivity {
                             break;
 
                         case 2:
+                            moveIndex = 0;
                             moveCounter++;
                             npcThread.start();
                             break;
@@ -197,12 +236,6 @@ public class GameActivity extends AppCompatActivity {
                         default:
                             break;
                     }
-
-
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    right.setBackgroundResource(R.drawable.btn1);
-                    imgTwo.setImageBitmap(player[0]);
-
                 }
                 return false;
             }
@@ -216,12 +249,20 @@ public class GameActivity extends AppCompatActivity {
                     imgTwo.setImageBitmap(player[4]);
                     moveChecker = checkMove(4,moveIndex);
 
+
+
+
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    top.setBackgroundResource(R.drawable.btn4);
+                    imgTwo.setImageBitmap(player[0]);
+
                     switch(moveChecker){
                         case 0:
                             moveIndex++;
                             break;
 
                         case 1:
+                            moveIndex = 0;
                             moveCounter--;
 
                             if(moveCounter < 4)
@@ -231,6 +272,7 @@ public class GameActivity extends AppCompatActivity {
                             break;
 
                         case 2:
+                            moveIndex = 0;
                             moveCounter++;
                             npcThread.start();
                             break;
@@ -238,12 +280,6 @@ public class GameActivity extends AppCompatActivity {
                         default:
                             break;
                     }
-
-
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    top.setBackgroundResource(R.drawable.btn4);
-                    imgTwo.setImageBitmap(player[0]);
-
                 }
                 return false;
             }
@@ -260,12 +296,19 @@ public class GameActivity extends AppCompatActivity {
                     imgTwo.setImageBitmap(player[3]);
                     moveChecker = checkMove(3,moveIndex);
 
+
+
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    bot.setBackgroundResource(R.drawable.btn3);
+                    imgTwo.setImageBitmap(player[0]);
+
                     switch(moveChecker){
                         case 0:
                             moveIndex++;
                             break;
 
                         case 1:
+                            moveIndex = 0;
                             moveCounter--;
 
                             if(moveCounter < 4)
@@ -275,6 +318,7 @@ public class GameActivity extends AppCompatActivity {
                             break;
 
                         case 2:
+                            moveIndex = 0;
                             moveCounter++;
                             npcThread.start();
                             break;
@@ -282,11 +326,6 @@ public class GameActivity extends AppCompatActivity {
                         default:
                             break;
                     }
-
-
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    bot.setBackgroundResource(R.drawable.btn3);
-                    imgTwo.setImageBitmap(player[0]);
 
                 }
                 return false;
@@ -334,12 +373,19 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
-    public void pauseTurn(){
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    public void buttonOff(){
+
+        left.setEnabled(false);
+        top.setEnabled(false);
+        right.setEnabled(false);
+        bot.setEnabled(false);
     }
 
+    public void buttonTurnOn(){
+
+        left.setEnabled(true);
+        top.setEnabled(true);
+        right.setEnabled(true);
+        bot.setEnabled(true);
+    }
 }
