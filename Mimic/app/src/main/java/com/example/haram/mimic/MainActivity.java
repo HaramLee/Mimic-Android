@@ -113,10 +113,7 @@ public class MainActivity extends AppCompatActivity {
     public void startGame(View view){
         Intent intent = new Intent(MainActivity.this, GameActivity.class);
         intro.stop();
-
         startActivity(intent);
-
-        intro.start();
     }
 
 
@@ -197,5 +194,36 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        if(intro.isPlaying())
+            intro.pause();
+        else
+            return;
+    }
 
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+        if(intro.isPlaying())
+            intro.stop();
+        else
+            return;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(!intro.isPlaying())
+            intro.start();
+        else
+            return;
+    }
+
+    @Override
+    public void onBackPressed() {
+    }
 }

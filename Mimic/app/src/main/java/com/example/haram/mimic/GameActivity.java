@@ -44,7 +44,6 @@ public class GameActivity extends AppCompatActivity {
     private int moveCounter = 4;
     static int moveIndex = 0;
     static ArrayList<Integer> moveList = new ArrayList<Integer>();
-    static ArrayList<Integer> playerMoveList = new ArrayList<Integer>();
 
     private int moveChecker = 0;
     private MediaPlayer move1;
@@ -55,6 +54,9 @@ public class GameActivity extends AppCompatActivity {
     private MediaPlayer combo;
 
     private MediaPlayer ending;
+
+    private Thread timerThread;
+    private Thread npcThread;
 
     private TextView scoreboard;
     private double currentScore = 0;
@@ -96,7 +98,7 @@ public class GameActivity extends AppCompatActivity {
         scoreboard = (TextView) findViewById(R.id.scoreboard);
 
 
-        currentTime = 60;
+        currentTime = 30;
         timerView.setText("Timer: "+Integer.toString(currentTime));
         Runnable myRunnable = new Runnable() {
             public void run() {
@@ -125,7 +127,7 @@ public class GameActivity extends AppCompatActivity {
             }
         };
 
-        Runnable npcMovement = new Runnable() {
+        final Runnable npcMovement = new Runnable() {
             public void run() {
 
                 npcMoving = true;
@@ -143,9 +145,10 @@ public class GameActivity extends AppCompatActivity {
                     final int random = (int) (Math.random() * 4 + 1);
 
                     try {
-                        Thread.sleep(500);
+                        Thread.sleep(700);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
+
                     }
                     moveList.add(random);
                     final int position = i % 5;
@@ -207,9 +210,10 @@ public class GameActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         try {
-                            Thread.sleep(500);
+                            Thread.sleep(700);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
+
                         }
                         imgOne.setImageBitmap(npc[0]);
                         buttonTurnOn();
@@ -228,10 +232,10 @@ public class GameActivity extends AppCompatActivity {
         };
 
 
-        final Thread timerThread = new Thread(myRunnable);
+        timerThread = new Thread(myRunnable);
         timerThread.start();
 
-        final Thread npcThread = new Thread(npcMovement);
+        npcThread = new Thread(npcMovement);
         npcThread.start();
 
         left = (ImageButton) findViewById(R.id.leftButton);
@@ -267,9 +271,12 @@ public class GameActivity extends AppCompatActivity {
                                 moveCounter = 4;
 
                             move5.start();
+                            npcThread.interrupt();  // if you need to make sure thread's run() method stops ASAP
+                            npcThread = new Thread(npcMovement);
+                            npcThread.start();
                             imgTwo.setImageBitmap(player[5]);
 
-                            npcThread.start();
+
                             break;
 
                         case 2:
@@ -278,6 +285,8 @@ public class GameActivity extends AppCompatActivity {
                             moveCounter++;
                             comboCounter += 0.5;
                             scoreCounter();
+                            npcThread.interrupt();  // if you need to make sure thread's run() method stops ASAP
+                            npcThread = new Thread(npcMovement);
                             npcThread.start();
                             break;
 
@@ -316,9 +325,11 @@ public class GameActivity extends AppCompatActivity {
                                 moveCounter = 4;
 
                             move5.start();
+                            npcThread.interrupt();  // if you need to make sure thread's run() method stops ASAP
+                            npcThread = new Thread(npcMovement);
+                            npcThread.start();
                             imgTwo.setImageBitmap(player[5]);
 
-                            npcThread.start();
                             break;
 
                         case 2:
@@ -327,6 +338,8 @@ public class GameActivity extends AppCompatActivity {
                             moveCounter++;
                             comboCounter += 0.5;
                             scoreCounter();
+                            npcThread.interrupt();  // if you need to make sure thread's run() method stops ASAP
+                            npcThread = new Thread(npcMovement);
                             npcThread.start();
                             break;
 
@@ -366,7 +379,8 @@ public class GameActivity extends AppCompatActivity {
 
                             move5.start();
                             imgTwo.setImageBitmap(player[5]);
-
+                            npcThread.interrupt();  // if you need to make sure thread's run() method stops ASAP
+                            npcThread = new Thread(npcMovement);
                             npcThread.start();
                             break;
 
@@ -376,6 +390,8 @@ public class GameActivity extends AppCompatActivity {
                             moveCounter++;
                             comboCounter += 0.5;
                             scoreCounter();
+                            npcThread.interrupt();  // if you need to make sure thread's run() method stops ASAP
+                            npcThread = new Thread(npcMovement);
                             npcThread.start();
                             break;
 
@@ -415,7 +431,8 @@ public class GameActivity extends AppCompatActivity {
 
                             move5.start();
                             imgTwo.setImageBitmap(player[5]);
-
+                            npcThread.interrupt();  // if you need to make sure thread's run() method stops ASAP
+                            npcThread = new Thread(npcMovement);
                             npcThread.start();
                             break;
 
@@ -425,6 +442,8 @@ public class GameActivity extends AppCompatActivity {
                             moveCounter++;
                             comboCounter += 0.5;
                             scoreCounter();
+                            npcThread.interrupt();  // if you need to make sure thread's run() method stops ASAP
+                            npcThread = new Thread(npcMovement);
                             npcThread.start();
                             break;
 
@@ -475,6 +494,13 @@ public class GameActivity extends AppCompatActivity {
             combo.start();
 
         scoreboard.setText("Score: "+Double.toString(currentScore));
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(GameActivity.this, MainActivity.class);
+        startActivity(intent);
+
     }
 
 }
