@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="@drawable/picture_blur"
+
+    tools:context="com.example.haram.mimic.MainActivity">
+
+    <View
+        android:id="@+id/opacityFilter"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/background_light"
+        android:alpha="0.4"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+    </View>
+
+    <TextView
+        android:text="TextView"
+        android:textColor="@android:color/background_light"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="126dp"
+        android:id="@+id/scoreText"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:text="GAME OVER!!!"
+        android:textSize="32sp"
+        android:fontFamily="sans-serif-condensed"
+        android:textStyle="bold"
+        android:textColor="@android:color/background_light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView2"
+        android:layout_marginBottom="49dp"
+        android:layout_above="@+id/editText"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:ems="10"
+        android:layout_marginTop="30dp"
+        android:id="@+id/editText"
+        android:layout_below="@+id/scoreText"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="Main Menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:id="@+id/button4"
+        android:layout_below="@+id/button3"
+        android:onClick="mainMenu"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:text="RETRY"
+        android:onClick="restartGame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="19dp"
+        android:id="@+id/button3"
+        android:layout_below="@+id/submit_button"
+        android:layout_centerHorizontal="true"
+/>
+
+    <Button
+        android:text="SUBMIT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/submit_button"
+        android:layout_marginTop="66dp"
+        android:layout_below="@+id/editText"
+        android:layout_centerHorizontal="true"
+    />
+
+</RelativeLayout>

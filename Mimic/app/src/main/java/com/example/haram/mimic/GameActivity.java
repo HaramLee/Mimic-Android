@@ -1,5 +1,6 @@
 package com.example.haram.mimic;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -51,6 +52,13 @@ public class GameActivity extends AppCompatActivity {
     private MediaPlayer move3;
     private MediaPlayer move4;
     private MediaPlayer move5;
+    private MediaPlayer combo;
+
+    private MediaPlayer ending;
+
+    private TextView scoreboard;
+    private double currentScore = 0;
+    private double comboCounter = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +70,8 @@ public class GameActivity extends AppCompatActivity {
         move3 = MediaPlayer.create(this, R.raw.action3);
         move4 = MediaPlayer.create(this, R.raw.action4);
         move5 = MediaPlayer.create(this, R.raw.action5);
+        ending = MediaPlayer.create(this, R.raw.timeup);
+        combo = MediaPlayer.create(this, R.raw.nice);
 
         MainActivity variables = new MainActivity();
         npc = variables.getNpc();
@@ -83,6 +93,8 @@ public class GameActivity extends AppCompatActivity {
 
 
         final TextView timerView = (TextView) findViewById(R.id.timer);
+        scoreboard = (TextView) findViewById(R.id.scoreboard);
+
 
         currentTime = 60;
         timerView.setText("Timer: "+Integer.toString(currentTime));
@@ -105,6 +117,10 @@ public class GameActivity extends AppCompatActivity {
                             }});
                     }
                 }
+                ending.start();
+                Intent intent = new Intent(GameActivity.this, EndActivity.class);
+                intent.putExtra("current_score", currentScore);
+                startActivity(intent);
 
             }
         };
@@ -166,9 +182,6 @@ public class GameActivity extends AppCompatActivity {
                                 default:
                                     break;
                             }
-
-
-
                         }
                     });
 
@@ -188,9 +201,6 @@ public class GameActivity extends AppCompatActivity {
                         default:
                             break;
                     }
-
-
-
                 }
 
                 runOnUiThread(new Runnable() {
@@ -209,6 +219,7 @@ public class GameActivity extends AppCompatActivity {
                         boxThree.setImageDrawable(null);
                         boxFour.setImageDrawable(null);
                         boxFive.setImageDrawable(null);
+
                     }
                 });
 
@@ -236,7 +247,7 @@ public class GameActivity extends AppCompatActivity {
                     left.setBackgroundResource(R.drawable.pbtn2);
                     imgTwo.setImageBitmap(player[2]);
                     moveChecker = checkMove(2,moveIndex);
-                    move2.start();
+
 
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     left.setBackgroundResource(R.drawable.btn2);
@@ -244,22 +255,29 @@ public class GameActivity extends AppCompatActivity {
 
                     switch(moveChecker){
                         case 0:
+                            move2.start();
                             moveIndex++;
                             break;
 
                         case 1:
                             moveIndex = 0;
                             moveCounter--;
-
+                            comboCounter = 1;
                             if(moveCounter < 4)
                                 moveCounter = 4;
+
+                            move5.start();
+                            imgTwo.setImageBitmap(player[5]);
 
                             npcThread.start();
                             break;
 
                         case 2:
+                            move2.start();
                             moveIndex = 0;
                             moveCounter++;
+                            comboCounter += 0.5;
+                            scoreCounter();
                             npcThread.start();
                             break;
 
@@ -278,7 +296,7 @@ public class GameActivity extends AppCompatActivity {
                     right.setBackgroundResource(R.drawable.pbtn1);
                     imgTwo.setImageBitmap(player[1]);
                     moveChecker = checkMove(1,moveIndex);
-                    move1.start();
+
 
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     right.setBackgroundResource(R.drawable.btn1);
@@ -286,22 +304,29 @@ public class GameActivity extends AppCompatActivity {
 
                     switch(moveChecker){
                         case 0:
+                            move1.start();
                             moveIndex++;
                             break;
 
                         case 1:
                             moveIndex = 0;
                             moveCounter--;
-
+                            comboCounter = 1;
                             if(moveCounter < 4)
                                 moveCounter = 4;
+
+                            move5.start();
+                            imgTwo.setImageBitmap(player[5]);
 
                             npcThread.start();
                             break;
 
                         case 2:
+                            move1.start();
                             moveIndex = 0;
                             moveCounter++;
+                            comboCounter += 0.5;
+                            scoreCounter();
                             npcThread.start();
                             break;
 
@@ -320,7 +345,7 @@ public class GameActivity extends AppCompatActivity {
                     top.setBackgroundResource(R.drawable.pbtn4);
                     imgTwo.setImageBitmap(player[4]);
                     moveChecker = checkMove(4,moveIndex);
-                    move4.start();
+
 
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     top.setBackgroundResource(R.drawable.btn4);
@@ -328,22 +353,29 @@ public class GameActivity extends AppCompatActivity {
 
                     switch(moveChecker){
                         case 0:
+                            move4.start();
                             moveIndex++;
                             break;
 
                         case 1:
                             moveIndex = 0;
                             moveCounter--;
-
+                            comboCounter = 1;
                             if(moveCounter < 4)
                                 moveCounter = 4;
+
+                            move5.start();
+                            imgTwo.setImageBitmap(player[5]);
 
                             npcThread.start();
                             break;
 
                         case 2:
+                            move4.start();
                             moveIndex = 0;
                             moveCounter++;
+                            comboCounter += 0.5;
+                            scoreCounter();
                             npcThread.start();
                             break;
 
@@ -355,9 +387,6 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
-
-
-
         bot.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -365,7 +394,7 @@ public class GameActivity extends AppCompatActivity {
                     bot.setBackgroundResource(R.drawable.pbtn3);
                     imgTwo.setImageBitmap(player[3]);
                     moveChecker = checkMove(3,moveIndex);
-                    move3.start();
+
 
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     bot.setBackgroundResource(R.drawable.btn3);
@@ -373,29 +402,35 @@ public class GameActivity extends AppCompatActivity {
 
                     switch(moveChecker){
                         case 0:
+                            move3.start();
                             moveIndex++;
                             break;
 
                         case 1:
                             moveIndex = 0;
                             moveCounter--;
-
+                            comboCounter = 1;
                             if(moveCounter < 4)
                                 moveCounter = 4;
+
+                            move5.start();
+                            imgTwo.setImageBitmap(player[5]);
 
                             npcThread.start();
                             break;
 
                         case 2:
+                            move3.start();
                             moveIndex = 0;
                             moveCounter++;
+                            comboCounter += 0.5;
+                            scoreCounter();
                             npcThread.start();
                             break;
 
                         default:
                             break;
                     }
-
                 }
                 return false;
             }
@@ -430,4 +465,16 @@ public class GameActivity extends AppCompatActivity {
         right.setEnabled(true);
         bot.setEnabled(true);
     }
+
+    public void scoreCounter(){
+
+        currentScore += 1000;
+        currentScore *= comboCounter;
+
+        if(comboCounter > 1)
+            combo.start();
+
+        scoreboard.setText("Score: "+Double.toString(currentScore));
+    }
+
 }

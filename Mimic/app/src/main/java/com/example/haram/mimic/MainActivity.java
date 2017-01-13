@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         npc = animationSet(npcBmp);
 
         COUNT_Y = 6;
+        NB_FRAMES = 6;
         player = animationSet(playerBmp);
 
         COUNT_Y = 4;
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         NB_FRAMES = 4;
         arrow = animationSet(arrowBmp);
 
-
+        NB_FRAMES = 5;
         animationGet(imgTwo, player);
         animationGet(imgOne, npc);
 
@@ -99,6 +100,14 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+
+
+        FRAME_W = 200;
+        FRAME_H = 308;
+        NB_FRAMES = 5;
+        COUNT_Y = 5;
+
+
     }
 
     public void startGame(View view){
