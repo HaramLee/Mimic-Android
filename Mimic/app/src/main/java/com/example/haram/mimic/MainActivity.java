@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,20 +25,19 @@ public class MainActivity extends AppCompatActivity {
 
 
     // frame width
-    private static final int FRAME_W = 200;
+    private static int FRAME_W = 200;
     // frame height
-    private static final int FRAME_H = 308;
+    private static int FRAME_H = 308;
     // number of frames
-    private static final int NB_FRAMES = 5;
+    private static int NB_FRAMES = 5;
 
-    // nb of frames in x
-    private static final int COUNT_X = 1;
     // nb of frames in y
-    private static final int COUNT_Y = 5;
+    private static int COUNT_Y = 5;
 
     //player frames holder
     static private Bitmap[] player;
     static private Bitmap[] npc;
+    static private Bitmap[] arrow;
 
     public Bitmap[] getPlayer() {
         return this.player;
@@ -47,14 +47,23 @@ public class MainActivity extends AppCompatActivity {
         return this.npc;
     }
 
+    public Bitmap[] getArrow() {
+        return this.arrow;
+    }
+
 
     // we can slow animation by changing frame duration
     private static final int FRAME_DURATION = 400; // in ms !
 
+    private MediaPlayer intro;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        intro = MediaPlayer.create(this, R.raw.main_bgm);
+        intro.setLooping(true);
+        intro.start();
 
         title_main = (ImageView) findViewById(R.id.title_main);
 
@@ -63,10 +72,21 @@ public class MainActivity extends AppCompatActivity {
 
 
         // load bitmap from assets
-        Bitmap birdBmp = getBitmapFromAssets(this, "character.png");
+        Bitmap playerBmp = getBitmapFromAssets(this, "character.png");
         Bitmap npcBmp = getBitmapFromAssets(this, "npc.png");
-        player = animationSet(birdBmp, true);
-        npc = animationSet(npcBmp, false);
+        Bitmap arrowBmp = getBitmapFromAssets(this, "arrow.png");
+
+        npc = animationSet(npcBmp);
+
+        COUNT_Y = 6;
+        player = animationSet(playerBmp);
+
+        COUNT_Y = 4;
+        FRAME_W = 80;
+        FRAME_H = 87;
+        NB_FRAMES = 4;
+        arrow = animationSet(arrowBmp);
+
 
         animationGet(imgTwo, player);
         animationGet(imgOne, npc);
@@ -83,7 +103,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void startGame(View view){
         Intent intent = new Intent(MainActivity.this, GameActivity.class);
+        intro.stop();
+
         startActivity(intent);
+
+        intro.start();
     }
 
 
@@ -110,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
         return bitmap;
     }
 
-    private Bitmap[] animationSet(Bitmap birdBmp, boolean check){
+    private Bitmap[] animationSet(Bitmap birdBmp){
         int y = 0;
         Bitmap[] temp = new Bitmap[NB_FRAMES];
 
@@ -124,9 +148,9 @@ public class MainActivity extends AppCompatActivity {
 
                 temp[currentFrame] = Bitmap.createBitmap(birdBmp, 0, FRAME_H * i, FRAME_W, FRAME_H);
 
-                // apply scale factor
-                temp[currentFrame] = Bitmap.createScaledBitmap(
-                        temp[currentFrame], FRAME_W * 1, FRAME_H * 1, true);
+//                // apply scale factor
+//                temp[currentFrame] = Bitmap.createScaledBitmap(
+//                        temp[currentFrame], FRAME_W * 1, FRAME_H * 1, true);
 
                 if (++currentFrame >= NB_FRAMES) {
                     break;

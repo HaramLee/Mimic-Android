@@ -27,8 +27,16 @@ public class GameActivity extends AppCompatActivity {
     private ImageButton bot;
     private ImageButton right;
 
+    private ImageView boxOne;
+    private ImageView boxTwo;
+    private ImageView boxThree;
+    private ImageView boxFour;
+    private ImageView boxFive;
+
     private Bitmap[] npc;
     private Bitmap[] player;
+    private Bitmap[] arrow;
+
     private boolean npcMoving = false;
     private int currentTime; // make updateAuto() return a string
 
@@ -38,26 +46,44 @@ public class GameActivity extends AppCompatActivity {
     static ArrayList<Integer> playerMoveList = new ArrayList<Integer>();
 
     private int moveChecker = 0;
-    static MediaPlayer mp;
+    private MediaPlayer move1;
+    private MediaPlayer move2;
+    private MediaPlayer move3;
+    private MediaPlayer move4;
+    private MediaPlayer move5;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_main);
 
-        mp = MediaPlayer.create(this, R.raw.action1);
+        move1 = MediaPlayer.create(this, R.raw.action1);
+        move2 = MediaPlayer.create(this, R.raw.action2);
+        move3 = MediaPlayer.create(this, R.raw.action3);
+        move4 = MediaPlayer.create(this, R.raw.action4);
+        move5 = MediaPlayer.create(this, R.raw.action5);
 
         MainActivity variables = new MainActivity();
         npc = variables.getNpc();
         player = variables.getPlayer();
+        arrow = variables.getArrow();
 
         imgOne = (ImageView) findViewById(R.id.imgOne);
         imgTwo = (ImageView) findViewById(R.id.imgTwo);
+
+        boxOne = (ImageView) findViewById(R.id.oneView);
+        boxTwo = (ImageView) findViewById(R.id.twoView);
+        boxThree = (ImageView) findViewById(R.id.threeView);
+        boxFour = (ImageView) findViewById(R.id.fourView);
+        boxFive = (ImageView) findViewById(R.id.fiveView);
+
 
         imgOne.setImageBitmap(npc[0]);
         imgTwo.setImageBitmap(player[0]);
 
 
-        final TextView timerView = (TextView) findViewById(R.id.timer); //grab your tv
+        final TextView timerView = (TextView) findViewById(R.id.timer);
+
         currentTime = 60;
         timerView.setText("Timer: "+Integer.toString(currentTime));
         Runnable myRunnable = new Runnable() {
@@ -72,15 +98,12 @@ public class GameActivity extends AppCompatActivity {
                     }
 
                     if(!npcMoving){
-
                         timerView.post(new Runnable() {
                             @Override
                             public void run() {
                                 timerView.setText("Timer: "+Integer.toString(--currentTime));
                             }});
                     }
-
-
                 }
 
             }
@@ -109,14 +132,64 @@ public class GameActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     moveList.add(random);
+                    final int position = i % 5;
 
                     imgOne.post(new Runnable() {
                         @Override
                         public void run() {
                             imgOne.setImageBitmap(npc[random]);
+
+                            if(position == 0){
+                                boxOne.setImageDrawable(null);
+                                boxTwo.setImageDrawable(null);
+                                boxThree.setImageDrawable(null);
+                                boxFour.setImageDrawable(null);
+                                boxFive.setImageDrawable(null);
+                            }
+
+                            switch(position){
+                                case 0:
+                                    boxOne.setImageBitmap(arrow[random-1]);
+                                    break;
+                                case 1:
+                                    boxTwo.setImageBitmap(arrow[random-1]);
+                                    break;
+                                case 2:
+                                    boxThree.setImageBitmap(arrow[random-1]);
+                                    break;
+                                case 3:
+                                    boxFour.setImageBitmap(arrow[random-1]);
+                                    break;
+                                case 4:
+                                    boxFive.setImageBitmap(arrow[random-1]);
+                                    break;
+                                default:
+                                    break;
+                            }
+
+
+
                         }
                     });
-                    mp.start();
+
+                    switch(random){
+                        case 1:
+                            move1.start();
+                            break;
+                        case 2:
+                            move2.start();
+                            break;
+                        case 3:
+                            move3.start();
+                            break;
+                        case 4:
+                            move4.start();
+                            break;
+                        default:
+                            break;
+                    }
+
+
 
                 }
 
@@ -130,6 +203,12 @@ public class GameActivity extends AppCompatActivity {
                         }
                         imgOne.setImageBitmap(npc[0]);
                         buttonTurnOn();
+
+                        boxOne.setImageDrawable(null);
+                        boxTwo.setImageDrawable(null);
+                        boxThree.setImageDrawable(null);
+                        boxFour.setImageDrawable(null);
+                        boxFive.setImageDrawable(null);
                     }
                 });
 
@@ -157,15 +236,11 @@ public class GameActivity extends AppCompatActivity {
                     left.setBackgroundResource(R.drawable.pbtn2);
                     imgTwo.setImageBitmap(player[2]);
                     moveChecker = checkMove(2,moveIndex);
-
-
-
-
+                    move2.start();
 
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     left.setBackgroundResource(R.drawable.btn2);
                     imgTwo.setImageBitmap(player[0]);
-
 
                     switch(moveChecker){
                         case 0:
@@ -203,14 +278,11 @@ public class GameActivity extends AppCompatActivity {
                     right.setBackgroundResource(R.drawable.pbtn1);
                     imgTwo.setImageBitmap(player[1]);
                     moveChecker = checkMove(1,moveIndex);
-
-
-
+                    move1.start();
 
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     right.setBackgroundResource(R.drawable.btn1);
                     imgTwo.setImageBitmap(player[0]);
-
 
                     switch(moveChecker){
                         case 0:
@@ -248,9 +320,7 @@ public class GameActivity extends AppCompatActivity {
                     top.setBackgroundResource(R.drawable.pbtn4);
                     imgTwo.setImageBitmap(player[4]);
                     moveChecker = checkMove(4,moveIndex);
-
-
-
+                    move4.start();
 
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     top.setBackgroundResource(R.drawable.btn4);
@@ -295,8 +365,7 @@ public class GameActivity extends AppCompatActivity {
                     bot.setBackgroundResource(R.drawable.pbtn3);
                     imgTwo.setImageBitmap(player[3]);
                     moveChecker = checkMove(3,moveIndex);
-
-
+                    move3.start();
 
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     bot.setBackgroundResource(R.drawable.btn3);
@@ -344,33 +413,6 @@ public class GameActivity extends AppCompatActivity {
         }
 
         return 0;
-    }
-
-
-    public void startgame(){
-
-        moveList.clear();
-
-
-        for(int i = 0; i < moveCounter; i++){
-            final int random = (int )(Math.random() * 4 + 1);
-
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            moveList.add(random);
-
-            imgOne.post(new Runnable() {
-                @Override
-                public void run() {
-                    imgOne.setImageBitmap(npc[random]);
-                }});
-           mp.start();
-
-        }
-
     }
 
     public void buttonOff(){
