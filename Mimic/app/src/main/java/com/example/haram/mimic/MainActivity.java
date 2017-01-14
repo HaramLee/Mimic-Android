@@ -116,6 +116,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void tutorialGame(View view){
+        Intent intent = new Intent(MainActivity.this, TutorialActivity.class);
+        intro.stop();
+        startActivity(intent);
+    }
 
     private Bitmap getBitmapFromAssets(MainActivity mainActivity,
                                        String filepath) {

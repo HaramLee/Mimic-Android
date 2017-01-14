@@ -29,25 +29,6 @@
         android:layout_alignParentTop="true"
 />
 
-    <Button
-        android:text="Start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/start_button"
-        android:onClick="startGame"
-        android:layout_above="@+id/button2"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:text="Score"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button2"
-        android:layout_marginBottom="67dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/start_button"
-        android:layout_alignStart="@+id/start_button" />
-
     <ImageView
         android:layout_width="150dp"
         android:layout_height="150dp"
@@ -67,5 +48,26 @@
         android:layout_alignStart="@+id/title_main"
         android:layout_marginLeft="11dp"
         android:layout_marginStart="11dp" />
+
+    <Button
+        android:text="Tutorial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/help_button"
+        android:onClick="tutorialGame"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/start_button"
+        android:layout_alignLeft="@+id/start_button"
+        android:layout_alignStart="@+id/start_button" />
+
+    <Button
+        android:text="Start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/start_button"
+        android:onClick="startGame"
+        android:layout_below="@+id/imgTwo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp" />
 
 </RelativeLayout>

@@ -8,7 +8,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -16,11 +17,19 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".GameActivity">
+        <activity android:name=".GameActivity"
+            android:noHistory="true"
+            android:screenOrientation="portrait">
 
         </activity>
 
-        <activity android:name=".EndActivity">
+        <activity android:name=".EndActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
+
+        <activity android:name=".TutorialActivity"
+            android:screenOrientation="portrait">
 
         </activity>
     </application>

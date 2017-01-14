@@ -487,8 +487,7 @@ public class GameActivity extends AppCompatActivity {
 
     public void scoreCounter(){
 
-        currentScore += 1000;
-        currentScore *= comboCounter;
+        currentScore += 1000 * comboCounter;
 
         if(comboCounter > 1)
             combo.start();
