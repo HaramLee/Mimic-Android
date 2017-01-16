@@ -2,6 +2,7 @@ package com.example.haram.mimic;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +28,7 @@ public class GameActivity extends AppCompatActivity {
     private ImageButton top;
     private ImageButton bot;
     private ImageButton right;
+    private ImageButton pauseButton;
 
     private ImageView boxOne;
     private ImageView boxTwo;
@@ -34,9 +36,13 @@ public class GameActivity extends AppCompatActivity {
     private ImageView boxFour;
     private ImageView boxFive;
 
+    private ImageView starterNum;
+    private ImageView startBackground;
+
     private Bitmap[] npc;
     private Bitmap[] player;
     private Bitmap[] arrow;
+    private Bitmap[] startingNum;
 
     private boolean npcMoving = false;
     private int currentTime; // make updateAuto() return a string
@@ -52,6 +58,11 @@ public class GameActivity extends AppCompatActivity {
     private MediaPlayer move4;
     private MediaPlayer move5;
     private MediaPlayer combo;
+
+    private MediaPlayer start0;
+    private MediaPlayer start1;
+    private MediaPlayer start2;
+    private MediaPlayer start3;
 
     private MediaPlayer ending;
 
@@ -75,6 +86,13 @@ public class GameActivity extends AppCompatActivity {
         ending = MediaPlayer.create(this, R.raw.timeup);
         combo = MediaPlayer.create(this, R.raw.nice);
 
+        start0 = MediaPlayer.create(this, R.raw.start_0);
+        start1 = MediaPlayer.create(this, R.raw.start_1);
+        start2 = MediaPlayer.create(this, R.raw.start_2);
+        start3 = MediaPlayer.create(this, R.raw.start_3);
+
+        final MediaPlayer[] startMusic = {start0,start1,start2,start3};
+
         MainActivity variables = new MainActivity();
         npc = variables.getNpc();
         player = variables.getPlayer();
@@ -89,9 +107,20 @@ public class GameActivity extends AppCompatActivity {
         boxFour = (ImageView) findViewById(R.id.fourView);
         boxFive = (ImageView) findViewById(R.id.fiveView);
 
+        startBackground = (ImageView)findViewById(R.id.startBackground);
+        starterNum = (ImageView) findViewById(R.id.startNumber);
 
         imgOne.setImageBitmap(npc[0]);
         imgTwo.setImageBitmap(player[0]);
+
+
+        Bitmap bitZero = BitmapFactory.decodeResource(this.getResources(), R.drawable.no0);
+        Bitmap bitOne = BitmapFactory.decodeResource(this.getResources(), R.drawable.no1);
+        Bitmap bitTwo = BitmapFactory.decodeResource(this.getResources(), R.drawable.no2);
+        Bitmap bitThree = BitmapFactory.decodeResource(this.getResources(), R.drawable.no3);
+        startingNum = new Bitmap[]{bitZero, bitOne, bitTwo, bitThree};
+
+        starterNum.setImageBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.start));
 
 
         final TextView timerView = (TextView) findViewById(R.id.timer);
@@ -232,11 +261,61 @@ public class GameActivity extends AppCompatActivity {
         };
 
 
+        Runnable gameStart = new Runnable() {
+            public void run() {
+
+                for(int i = 3; i >= 0; i--) {
+
+                    final int j = i;
+                    starterNum.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            starterNum.setImageBitmap(startingNum[j]);
+                            startMusic[j].start();
+                        }
+                    });
+
+                    try {
+                        Thread.sleep(700);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+
+                    }
+
+
+                }
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        startBackground.setVisibility(View.GONE);
+                        starterNum.setVisibility(View.GONE);
+
+                        timerThread.start();
+                        npcThread.start();
+                    }
+                });
+
+            }
+        };
+
+
         timerThread = new Thread(myRunnable);
-        timerThread.start();
 
         npcThread = new Thread(npcMovement);
-        npcThread.start();
+
+        final Thread gameThread = new Thread(gameStart);
+
+
+        startBackground.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                gameThread.start();
+
+            }
+        });
+
 
         left = (ImageButton) findViewById(R.id.leftButton);
         right = (ImageButton) findViewById(R.id.rightButton);

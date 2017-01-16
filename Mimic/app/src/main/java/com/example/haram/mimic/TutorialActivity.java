@@ -1,6 +1,7 @@
 package com.example.haram.mimic;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -23,5 +24,12 @@ public class TutorialActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         adapter = new CustomSwipeAdapter(this);
         viewPager.setAdapter(adapter);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(TutorialActivity.this, MainActivity.class);
+        startActivity(intent);
+
     }
 }

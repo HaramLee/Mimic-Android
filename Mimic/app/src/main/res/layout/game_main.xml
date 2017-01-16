@@ -146,6 +146,30 @@
         android:layout_marginStart="34dp" />
 
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/startBackground"
+        android:background="@android:color/black"
+        android:alpha="0.75"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/startNumber"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
+
+    <!--<ImageButton-->
+        <!--android:layout_width="40dp"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:id="@+id/pauseButton"-->
+        <!--android:background="@drawable/pause_button"-->
+        <!--android:layout_marginTop="9dp"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_centerHorizontal="true" />-->
 
 </RelativeLayout>
