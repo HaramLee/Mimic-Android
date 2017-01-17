@@ -42,7 +42,7 @@ public class GameActivity extends AppCompatActivity {
     private Bitmap[] npc;
     private Bitmap[] player;
     private Bitmap[] arrow;
-    private Bitmap[] startingNum;
+    private int[] startingNum;
 
     private boolean npcMoving = false;
     private int currentTime; // make updateAuto() return a string
@@ -113,14 +113,9 @@ public class GameActivity extends AppCompatActivity {
         imgOne.setImageBitmap(npc[0]);
         imgTwo.setImageBitmap(player[0]);
 
+        startingNum = new int[]{R.drawable.no0, R.drawable.no1, R.drawable.no2, R.drawable.no3};
 
-        Bitmap bitZero = BitmapFactory.decodeResource(this.getResources(), R.drawable.no0);
-        Bitmap bitOne = BitmapFactory.decodeResource(this.getResources(), R.drawable.no1);
-        Bitmap bitTwo = BitmapFactory.decodeResource(this.getResources(), R.drawable.no2);
-        Bitmap bitThree = BitmapFactory.decodeResource(this.getResources(), R.drawable.no3);
-        startingNum = new Bitmap[]{bitZero, bitOne, bitTwo, bitThree};
-
-        starterNum.setImageBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.start));
+        starterNum.setImageResource(R.drawable.start);
 
 
         final TextView timerView = (TextView) findViewById(R.id.timer);
@@ -270,7 +265,7 @@ public class GameActivity extends AppCompatActivity {
                     starterNum.post(new Runnable() {
                         @Override
                         public void run() {
-                            starterNum.setImageBitmap(startingNum[j]);
+                            starterNum.setImageResource(startingNum[j]);
                             startMusic[j].start();
                         }
                     });
